@@ -2,17 +2,20 @@
 pragma solidity ^0.8.13;
 
 import {Script, console} from "forge-std/Script.sol";
-import {Counter} from "../src/Counter.sol";
+import "../src/RPS.sol";
+import "../src/MockERC721.sol";
 
-contract CounterScript is Script {
-    Counter public counter;
+contract RPSScript is Script {
+    RPS public game;
+    MockERC721 public token;
 
     function setUp() public {}
 
     function run() public {
         vm.startBroadcast();
 
-        counter = new Counter();
+        token = new MockERC721();
+        game = new RPS(address(token));
 
         vm.stopBroadcast();
     }

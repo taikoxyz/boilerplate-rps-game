@@ -4,9 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "forge test --match-path 'test/*.t.sol' -vvv",
+    "build": "forge build",
+    "fmt:sol": "forge fmt",
+    "lint:sol": "solhint src/**/*.sol test/**/*.sol scripts/**/*.sol",
+    "node": "anvil"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "solhint": "^5.0.3"
+  }
 }
