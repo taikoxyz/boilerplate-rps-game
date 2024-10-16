@@ -4,9 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prepare": "node scripts/prepare-config.js && mustache config.json subgraph.yaml.mustache > subgraph.yaml",
+    "start": "./run.sh",
+    "clean": "rimraf ./src/types ./build",
+    "codegen": "graph codegen --output-dir src/types/",
+    "build": "graph build",
+    "format": "prettier --write src ./schema.graphql ./subgraph.yaml ./scripts",
+    "lint": "eslint . --fix",
+    "graph:create": "graph create --node http://localhost:8020/ rps",
+    "graph:deploy": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.35.1",
+    "mustache": "^4.2.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1"
+  }
 }

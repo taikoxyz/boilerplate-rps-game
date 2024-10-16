@@ -1,0 +1,46 @@
+specVersion: 0.0.4
+description: >-
+  RPS Game Engine Subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: RPS
+    network: {{network}}
+    source:
+      address: '{{RPS_ADDRESS}}'
+      abi: RPS
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/handlers/RPS.ts
+      entities:
+        - BadgeToken
+      abis:
+        - name: RPS
+          file: ./abi/RPS.json
+      eventHandlers:
+        - event: HandRegistered(indexed bytes32,indexed address,uint256,uint256,uint8)
+          handler: handleHandRegistered
+  - kind: ethereum/contract
+    name: MockERC721
+    network: {{network}}
+    source:
+      address: '{{MOCK_ERC721_TOKEN}}'
+      abi: MockERC721
+      startBlock: 1
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/handlers/MockERC721.ts
+      entities:
+        - BadgeToken
+      abis:
+        - name: MockERC721
+          file: ./abi/MockERC721.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleERC721Transfer

@@ -10,32 +10,39 @@ contract RPSTest is Test {
     MockERC721 public token;
 
     address public owner = vm.addr(0x1);
-    address public player1 = vm.addr(0x2);
 
-    uint256 constant public TOKEN_ID = 1;
+    address[] public participants = [vm.addr(0x2), vm.addr(0x3), vm.addr(0x4), vm.addr(0x5), vm.addr(0x6)];
+
+    uint256 public constant TOKEN_ID = 1;
 
     function setUp() public {
         vm.startBroadcast(owner);
         token = new MockERC721();
         game = new RPS(address(token));
+
+        game.openRegistration();
         vm.stopBroadcast();
     }
 
     function test_register() public {
-        token.mint(player1, TOKEN_ID);
-        uint256 registerBlockTimestamp = vm.getBlockTimestamp();
+        for (uint256 i = 0; i < participants.length; i++) {
+            uint256 tokenId = i + 1;
+            RPS.Moves move = RPS.Moves(i % 3);
+            token.mint(participants[i], tokenId);
+            vm.prank(participants[i]);
+            game.register(tokenId, move);
+        }
 
-        vm.prank(player1);
-        game.register(1, RPS.Moves.ROCK);
+        RPS.Entry[] memory entries = game.entries(game.gameNonce());
 
-        RPS.Entry[] memory entries = game.entries(player1, TOKEN_ID);
+        assertEq(entries.length, participants.length);
 
-        assertEq(entries.length, 1);
-
-        RPS.Entry memory entry = entries[0];
-
-        assertEq(entry.timestamp, registerBlockTimestamp);
-        assertEq(uint256(entry.move), uint256(RPS.Moves.ROCK));
+        for (uint256 i = 0; i < participants.length; i++) {
+            assertEq(uint256(entries[i].move), uint256(RPS.Moves(i % 3)));
+            assertEq(entries[i].gameNonce, 1);
+            assertEq(entries[i].owner, participants[i]);
+            assertEq(entries[i].tokenId, i + 1);
+        }
     }
     /*
     function test_Increment() public {

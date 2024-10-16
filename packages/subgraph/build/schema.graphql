@@ -1,0 +1,9 @@
+type Account @entity {
+  id: Bytes!
+tokens: [ParticipationToken!] @derivedFrom(field: "owner")
+}
+
+type ParticipationToken @entity {
+  id: ID!
+  owner: Account!
+}

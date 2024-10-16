@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf abis cache* && forge clean",
     "test": "forge test --match-path 'test/*.t.sol' -vvv",
     "build": "forge build",
-    "fmt:sol": "forge fmt",
-    "lint:sol": "solhint src/**/*.sol test/**/*.sol scripts/**/*.sol",
-    "node": "anvil"
+    "compile": "forge compile",
+    "deploy:anvil": "pnpm clean && forge script script/deploy.s.sol --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast",
+    "setup:anvil": "pnpm clean && forge script script/setup.s.sol --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast",
+    "format": "forge fmt",
+    "lint": "solhint src/**/*.sol test/**/*.sol script/**/*.sol",
+    "node": "anvil --host 0.0.0.0"
   },
   "keywords": [],
   "author": "",
