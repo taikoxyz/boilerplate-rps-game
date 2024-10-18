@@ -222,25 +222,6 @@ export class RPS extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  participants(participantHash: Bytes): Address {
-    let result = super.call('participants', 'participants(bytes32):(address)', [
-      ethereum.Value.fromFixedBytes(participantHash),
-    ]);
-
-    return result[0].toAddress();
-  }
-
-  try_participants(participantHash: Bytes): ethereum.CallResult<Address> {
-    let result = super.tryCall('participants', 'participants(bytes32):(address)', [
-      ethereum.Value.fromFixedBytes(participantHash),
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   participationToken(): Address {
     let result = super.call('participationToken', 'participationToken():(address)', []);
 

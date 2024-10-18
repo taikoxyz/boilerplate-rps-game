@@ -7,7 +7,7 @@ dataSources:
     name: RPS
     network: taiko-hekla-testnet
     source:
-      address: "0xdE17cb08ae4Aa50bd5E8D34eD9c53d93ec36C7b4"
+      address: "0x81F51A95E18819b87059993A74102Cd8F046d296"
       abi: RPS
       startBlock: 890000
     mapping:

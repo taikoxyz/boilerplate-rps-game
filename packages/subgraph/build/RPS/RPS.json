@@ -163,25 +163,6 @@
   },
   {
     "type": "function",
-    "name": "participants",
-    "inputs": [
-      {
-        "name": "participantHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "participationToken",
     "inputs": [],
     "outputs": [

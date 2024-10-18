@@ -14,7 +14,7 @@
     "graph:create": "graph create --node http://localhost:8020/ rps",
     "graph:deploy": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001/",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy:hekla": "pnpm build && goldsky subgraph deploy rps/alpha-3 --path"
+    "deploy:hekla": "pnpm build && goldsky subgraph deploy rps/alpha-5 --path"
   },
   "keywords": [],
   "author": "",
