@@ -5,7 +5,7 @@ import {Script, console} from "forge-std/Script.sol";
 import "../src/RPS.sol";
 
 contract CloseScript is Script {
-    RPS public game = RPS(0x81F51A95E18819b87059993A74102Cd8F046d296);
+    RPS public game = RPS(0xe276dC810A8a79a441E1744bd4c5aDB9f494CB9B);
 
     uint256 public seed = 123456790;
 

@@ -6,8 +6,9 @@ import "../src/RPS.sol";
 import "../src/MockERC721.sol";
 
 contract SetUpScript is Script {
-    RPS public game = RPS(0x81F51A95E18819b87059993A74102Cd8F046d296);
-    MockERC721 public token = MockERC721(0x0362C8EA52966Fb2e0E34e7D97B2f63d25869Ce0);
+
+    RPS public game = RPS(0xe276dC810A8a79a441E1744bd4c5aDB9f494CB9B);
+    MockERC721 public token = MockERC721(0xC5aDfe955ECF6783551357efA4D0F92949dE8Ed3);
 
     address[] public participants = [
         vm.addr(0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d), // (1)
