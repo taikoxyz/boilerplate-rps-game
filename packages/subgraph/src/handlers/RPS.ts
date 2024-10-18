@@ -75,7 +75,7 @@ export function handleGame(event: Game): void {
 
   let participants = game.participants.load();
 
-  // Run the game for 5 rounds
+  // Run the game for 5 rounds of battle royale duels
   const rounds = 5;
   for (let k = 0; k < rounds; k++) {
     const players: ParticipationToken[] = [];
