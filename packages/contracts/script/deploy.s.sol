@@ -11,6 +11,11 @@ contract DeployScript is Script {
 
     function setUp() public {}
 
+    function getContractJsonLocation() public view returns (string memory) {
+        string memory root = vm.projectRoot();
+        return string.concat(root, "/deployments/hekla.json");
+    }
+
     function run() public {
         vm.startBroadcast();
 

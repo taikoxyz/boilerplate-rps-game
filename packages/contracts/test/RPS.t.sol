@@ -15,7 +15,7 @@ contract RPSTest is Test {
 
     uint256 public constant TOKEN_ID = 1;
 
-    uint256 seed = 123456790;
+    uint256 public seed = 123456790;
 
     function setUp() public {
         vm.startBroadcast(owner);

@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-//import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract RPS {
     IERC721 public participationToken;
-    mapping(bytes32 participantHash => address owner) public participants;
 
     bool public isRegistrationOpen;
     uint256 public gameSeed;
@@ -28,19 +26,16 @@ contract RPS {
         uint256 timestamp;
     }
 
-    /// @notice Events
     event HandRegistered(
         bytes32 indexed participantHash, address indexed owner, uint256 tokenId, Moves move, uint256 timestamp
     );
 
     event Game(uint256 gameSeed);
 
-    /// @notice Errors
     error ALREADY_A_PARTICIPANT();
     error NOT_A_PARTICIPANT();
     error NOT_ADMIN();
     error GAME_CLOSED();
-    /// @notice Modifiers
 
     modifier onlyAdmin() {
         if (msg.sender != admin) {
@@ -59,7 +54,7 @@ contract RPS {
     modifier notParticipant(uint256 tokenId) {
         bytes32 participantHash = getParticipantHash(msg.sender, tokenId);
 
-        if (participants[participantHash] != address(0)) {
+        if (entries[participantHash].owner != address(0)) {
             revert ALREADY_A_PARTICIPANT();
         }
         _;
@@ -68,32 +63,24 @@ contract RPS {
     modifier isParticipant(uint256 tokenId) {
         bytes32 participantHash = getParticipantHash(msg.sender, tokenId);
 
-        if (participants[participantHash] != msg.sender) {
+        if (entries[participantHash].owner != msg.sender) {
             revert NOT_A_PARTICIPANT();
         }
         _;
     }
 
-    /// @notice Constructor
     constructor(address erc721Address) {
         admin = msg.sender;
         participationToken = IERC721(erc721Address);
         isRegistrationOpen = true;
     }
 
-    function getParticipantHash(address owner, uint256 tokenId) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(owner, tokenId));
-    }
-
-
     function _register(address _player, uint256 _tokenId, Moves _move) internal returns (bytes32 participantHash) {
         participantHash = getParticipantHash(_player, _tokenId);
 
-        if (participants[participantHash] == address(0)) {
-            // new user
-            participants[participantHash] = _player;
-        } else if (participants[participantHash] != _player) {
-            // not the owner for that token
+        if (entries[participantHash].owner == address(0)) {
+            entries[participantHash].owner = _player;
+        } else if (entries[participantHash].owner != _player) {
             revert NOT_A_PARTICIPANT();
         }
 
@@ -102,9 +89,11 @@ contract RPS {
         return participantHash;
     }
 
-
-
-    function registerPlayer(address _player, uint256 _tokenId, Moves _move) public onlyAdmin returns (bytes32 participantHash) {
+    function registerPlayer(address _player, uint256 _tokenId, Moves _move)
+        public
+        onlyAdmin
+        returns (bytes32 participantHash)
+    {
         return _register(_player, _tokenId, _move);
     }
 
@@ -116,6 +105,10 @@ contract RPS {
         isRegistrationOpen = false;
         gameSeed = _gameSeed;
         emit Game(_gameSeed);
+    }
+
+    function getParticipantHash(address owner, uint256 tokenId) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(owner, tokenId));
     }
 
     function getEntry(bytes32 participantHash) public view returns (Entry memory) {
