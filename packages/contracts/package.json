@@ -8,8 +8,8 @@
     "test": "forge test --match-path 'test/*.t.sol' -vvv",
     "build": "forge build",
     "compile": "forge compile",
-    "deploy:anvil": "pnpm clean && forge script script/deploy.s.sol --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast",
-    "setup:anvil": "pnpm clean && forge script script/setup.s.sol --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast",
+    "deploy:hekla": "pnpm clean && forge script script/deploy.s.sol --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast",
+    "setup:hekla": "pnpm clean && forge script script/setup.s.sol --rpc-url \"$RPC_URL\" --private-key \"$PRIVATE_KEY\" --broadcast",
     "format": "forge fmt",
     "lint": "solhint src/**/*.sol test/**/*.sol script/**/*.sol",
     "node": "anvil --host 0.0.0.0"

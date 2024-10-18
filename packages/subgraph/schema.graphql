@@ -1,9 +1,12 @@
 type Account @entity {
   id: Bytes!
-  tokens: [ParticipationToken!] @derivedFrom(field: "owner")
+  tokens: [ParticipationToken!] @derivedFrom(field: "player")
 }
 
 type ParticipationToken @entity {
   id: ID!
-  owner: Account!
+  participationHash: Bytes!
+  player: Account!
+  move: BigInt!
+  timestamp: BigInt!
 }

@@ -6,10 +6,9 @@ import "../src/RPS.sol";
 import "../src/MockERC721.sol";
 
 contract SetUpScript is Script {
-    RPS public game = RPS(0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0);
-    MockERC721 public token = MockERC721(0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e);
+    RPS public game = RPS(0xD8152aaA8a2dFAFb356238B14124a9A17D2E1D24);
+    MockERC721 public token = MockERC721(0x0969C6Fe0d7FF1873d5AbDBf14260C987bF73735);
 
-    address public owner = vm.addr(0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80);
 
     address[] public participants = [
         vm.addr(0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d), // (1)
@@ -23,28 +22,26 @@ contract SetUpScript is Script {
         vm.addr(0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6) // (9)
     ];
 
-    function mintTokens() public {
-        for (uint256 i = 0; i < participants.length; i++) {
-            uint256 tokenId = vm.getBlockNumber() + participants.length + i;
-            vm.prank(participants[i]);
-            token.mint(participants[i], tokenId);
-            console.log("Minted token ", tokenId, " for address: ", participants[i]);
-            game.register(tokenId, RPS.Moves(i % 3));
-        }
-    }
 
     function setUp() public {}
 
     function run() public {
-        vm.startBroadcast(owner);
 
         console.log("ERC721 token address: ", address(token));
         console.log("Game address: ", address(game));
 
-        game.openRegistration();
-        // create a bunch of entries
-        vm.stopBroadcast();
+        vm.startBroadcast();
 
-        mintTokens();
+ for (uint256 i = 0; i < participants.length; i++) {
+
+            uint256 tokenId = vm.getBlockNumber() + participants.length + i;
+            token.mint(participants[i], tokenId);
+            console.log("Minted token ", tokenId, " for address: ", participants[i]);
+            game.registerPlayer(participants[i], tokenId, RPS.Moves(i % 3));
+
     }
+
+            vm.stopBroadcast();
+
+}
 }

@@ -15,43 +15,58 @@ contract RPSTest is Test {
 
     uint256 public constant TOKEN_ID = 1;
 
+    uint256 seed = 123456790;
+
     function setUp() public {
         vm.startBroadcast(owner);
         token = new MockERC721();
         game = new RPS(address(token));
-
-        game.openRegistration();
         vm.stopBroadcast();
     }
 
-    function test_register() public {
+    function test_register_single() public {
+        uint256 tokenId = 1;
+        RPS.Moves move = RPS.Moves.ROCK;
+        token.mint(participants[0], tokenId);
+        vm.prank(participants[0]);
+        bytes32 participantHash = game.register(tokenId, move);
+
+        RPS.Entry memory entry = game.getEntry(participantHash);
+
+        assertEq(uint256(entry.move), uint256(move));
+        assertEq(entry.owner, participants[0]);
+        assertEq(entry.tokenId, tokenId);
+    }
+
+    function test_register_all() public {
+        RPS.Entry[] memory entries = new RPS.Entry[](participants.length);
         for (uint256 i = 0; i < participants.length; i++) {
             uint256 tokenId = i + 1;
             RPS.Moves move = RPS.Moves(i % 3);
             token.mint(participants[i], tokenId);
             vm.prank(participants[i]);
-            game.register(tokenId, move);
+            bytes32 participantHash = game.register(tokenId, move);
+            entries[i] = game.getEntry(participantHash);
         }
-
-        RPS.Entry[] memory entries = game.entries(game.gameNonce());
 
         assertEq(entries.length, participants.length);
 
         for (uint256 i = 0; i < participants.length; i++) {
             assertEq(uint256(entries[i].move), uint256(RPS.Moves(i % 3)));
-            assertEq(entries[i].gameNonce, 1);
             assertEq(entries[i].owner, participants[i]);
             assertEq(entries[i].tokenId, i + 1);
         }
     }
-    /*
-    function test_Increment() public {
-        game.increment();
-        assertEq(game.number(), 1);
-    }
 
-    function testFuzz_SetNumber(uint256 x) public {
-        game.setNumber(x);
-        assertEq(game.number(), x);
-    }*/
+    function test_register_revertGameClosed() public {
+        vm.prank(owner);
+        game.executeGame(seed);
+
+        uint256 tokenId = 1;
+        RPS.Moves move = RPS.Moves.ROCK;
+        token.mint(participants[0], tokenId);
+        vm.prank(participants[0]);
+        vm.expectRevert();
+        game.register(tokenId, move);
+    }
 }

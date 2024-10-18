@@ -1,6 +1,6 @@
 const { writeFileSync, copyFileSync } = require('fs');
 const path = require('path');
-const { transactions } = require('../../contracts/broadcast/deploy.s.sol/31337/run-latest.json');
+const { transactions } = require('../../contracts/broadcast/deploy.s.sol/167009/run-latest.json');
 
 function main() {
   const rpsTx = transactions.find((tx) => tx.contractName === 'RPS');
@@ -16,7 +16,7 @@ function main() {
     path.join(__dirname, '../config.json'),
     JSON.stringify(
       {
-        network: 'mainnet',
+        network: 'taiko-hekla-testnet',
         RPS_ADDRESS,
         MOCK_ERC721_TOKEN,
       },

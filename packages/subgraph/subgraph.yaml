@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: RPS
-    network: mainnet
+    network: taiko-hekla-testnet
     source:
-      address: '0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0'
+      address: '0xD8152aaA8a2dFAFb356238B14124a9A17D2E1D24'
       abi: RPS
-      startBlock: 1
+      startBlock: 890000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -22,25 +22,5 @@ dataSources:
         - name: RPS
           file: ./abi/RPS.json
       eventHandlers:
-        - event: HandRegistered(indexed bytes32,indexed address,uint256,uint256,uint8)
+        - event: HandRegistered(indexed bytes32,indexed address,uint256,uint8,uint256)
           handler: handleHandRegistered
-  - kind: ethereum/contract
-    name: MockERC721
-    network: mainnet
-    source:
-      address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e'
-      abi: MockERC721
-      startBlock: 1
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      file: ./src/handlers/MockERC721.ts
-      entities:
-        - BadgeToken
-      abis:
-        - name: MockERC721
-          file: ./abi/MockERC721.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleERC721Transfer
