@@ -239,7 +239,7 @@
     ],
     "outputs": [
       {
-        "name": "",
+        "name": "participantHash",
         "type": "bytes32",
         "internalType": "bytes32"
       }

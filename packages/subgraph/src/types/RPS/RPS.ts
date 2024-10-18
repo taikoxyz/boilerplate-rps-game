@@ -514,7 +514,7 @@ export class RegisterPlayerCall__Outputs {
     this._call = call;
   }
 
-  get value0(): Bytes {
+  get participantHash(): Bytes {
     return this._call.outputValues[0].value.toBytes();
   }
 }

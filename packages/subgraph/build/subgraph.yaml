@@ -7,7 +7,7 @@ dataSources:
     name: RPS
     network: taiko-hekla-testnet
     source:
-      address: "0xD8152aaA8a2dFAFb356238B14124a9A17D2E1D24"
+      address: "0xdE17cb08ae4Aa50bd5E8D34eD9c53d93ec36C7b4"
       abi: RPS
       startBlock: 890000
     mapping:
@@ -23,3 +23,5 @@ dataSources:
       eventHandlers:
         - event: HandRegistered(indexed bytes32,indexed address,uint256,uint8,uint256)
           handler: handleHandRegistered
+        - event: Game(uint256)
+          handler: handleGame

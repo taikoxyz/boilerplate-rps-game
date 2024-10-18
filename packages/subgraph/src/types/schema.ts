@@ -155,6 +155,95 @@ export class ParticipationToken extends Entity {
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
   }
+
+  get game(): Bytes {
+    let value = this.get("game");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set game(value: Bytes) {
+    this.set("game", Value.fromBytes(value));
+  }
+
+  get score(): BigInt {
+    let value = this.get("score");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set score(value: BigInt) {
+    this.set("score", Value.fromBigInt(value));
+  }
+}
+
+export class RpsGame extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RpsGame entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type RpsGame must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("RpsGame", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): RpsGame | null {
+    return changetype<RpsGame | null>(
+      store.get_in_block("RpsGame", id.toHexString()),
+    );
+  }
+
+  static load(id: Bytes): RpsGame | null {
+    return changetype<RpsGame | null>(store.get("RpsGame", id.toHexString()));
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get participants(): ParticipationTokenLoader {
+    return new ParticipationTokenLoader(
+      "RpsGame",
+      this.get("id")!.toBytes().toHexString(),
+      "participants",
+    );
+  }
+
+  get seed(): BigInt {
+    let value = this.get("seed");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set seed(value: BigInt) {
+    this.set("seed", Value.fromBigInt(value));
+  }
 }
 
 export class ParticipationTokenLoader extends Entity {

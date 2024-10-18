@@ -9,4 +9,12 @@ type ParticipationToken @entity {
   player: Account!
   move: BigInt!
   timestamp: BigInt!
+  game: RpsGame!
+  score: BigInt!
+}
+
+type RpsGame @entity {
+  id: Bytes!
+  participants: [ParticipationToken!] @derivedFrom(field: "game")
+  seed: BigInt!
 }
