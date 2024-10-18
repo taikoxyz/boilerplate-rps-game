@@ -1,4 +1,4 @@
-# RPS
+# Web3 Rock-Paper-Scissors
 
 ## Disclaimer
 This code is intended for educational purposes only. It is not production-ready. Use at your own risk.
